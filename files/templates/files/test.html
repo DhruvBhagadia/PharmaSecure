@@ -1,0 +1,15 @@
+<form method="post">
+
+    {% csrf_token %}
+    	{% for field in medicine %}
+			<div class="form-group">
+					<div>
+						<span class="text-danger la">{{ field.errors }}</span>
+					</div>
+					<label>{{ field.label_tag }}</label>
+					<div>{{ field }}</div>
+			</div>
+
+		{% endfor %}
+        <button type="submit" class="submit btn btn-danger">Register</button>
+</form>
