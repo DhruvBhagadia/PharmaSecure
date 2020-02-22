@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login Page</title>
+	
+	{% load static %}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'files/login.css' %}">
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>	
+
+	<!-- Jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>	
+
+</head>
+<body>
+
+	<div class="container h-100">
+		<div class="d-flex justify-content-center h-100">
+			<div class="user_card">
+				<div class="d-flex justify-content-center">
+					<div class="brand_logo_container">
+						<img src="{% static 'files/images/logo1.jpg' %}" class="brand_logo" alt="Logo">
+					</div>
+				</div>
+				<div class="d-flex justify-content-center form_container">					
+					<!-- <form>
+						<h2 class="text-light text-center"><b>Login Form</b></h2>
+						<br>
+						<div class="input-group mb-3">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fa fa-user"></i></span>
+							</div>
+							<input type="text" name="" class="input form-control mx-2" id="username" placeholder="username">
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fa fa-key"></i></span>
+							</div>
+							<input type="password" name="" class="input form-control mx-2" id="password" placeholder="password">
+						</div>
+						<br>
+						<div class="d-flex justify-content-center mt-3 login_container">
+				 			<button type="button" name="button" class="btn login_btn">Login</button>
+				   		</div>
+				   		<br>
+					</form> -->
+					<form method="post">
+						<h3 class="text-dark text-center"><b>Login Form</b></h3>
+						<br>
+					    {% csrf_token %}
+					    	{% for field in user_form %}
+								<div class="form-group">
+										<div>
+											<span class="text-danger la">{{ field.errors }}</span>
+										</div>
+										<label>{{ field.label_tag }}</label>
+										<div>{{ field }}</div>
+								</div>
+
+							{% endfor %}
+							<br>
+					        <button type="submit" class="btn login_btn">Register</button>
+					        <br>
+					</form>					
+				</div>
+		
+<!-- 				<div class="mt-4">
+					<div class="d-flex justify-content-center links">
+						Don't have an account? <a href="#" class="ml-2">Sign Up</a>
+					</div>
+					<div class="d-flex justify-content-center links">
+						<a href="#">Forgot your password?</a>
+					</div>
+				</div> -->
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

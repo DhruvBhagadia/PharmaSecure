@@ -56,7 +56,7 @@ class PublicKey(object):
 
 
     def __repr__(self):
-         return  str(self.n)
+        return  str(self.n)
 
 def generate_keypair(bits):
     p = primes.generate_prime(bits / 2)
@@ -125,43 +125,3 @@ def decode(num):
         #    ans += list(mapper.keys())[list(mapper.values()).index(int(text[i]))]
     return ans
 
-
-# # print("Enter string 1 ")
-# # pt1 = str(input())
-# # print("Enter string 2 ")
-# # pt2 = str(input())
-# #
-# # pt1_val = (stringToInteger(pt1));
-# # pt2_val = (stringToInteger(pt2));
-# #
-# # for i in range(len(pt2_val)):
-# #     pt1_val += "0"
-# #
-# # print()
-# # print(pt1_val)
-# # print(pt2_val)
-#
-#
-# priv, pub = generate_keypair(256);
-# print (priv)
-# print ('----------------------------------------')
-# print(pub)
-# a=5
-# b=7
-#
-#
-#
-# # #
-# ct1 = encrypt(pub, int(a))
-# ct2 = encrypt(pub, int(b))
-# # print()
-# # print("Encrypted number 1 is " + str(ct1))
-# # print("Encrypted number 2 is " + str(ct2))
-# #
-# ct = e_add(pub, ct1, ct2)
-# print()
-# print("Encrypted sum is " + str(ct))
-# #
-# ot = decrypt(priv, pub, ct)
-# print()
-# print("Decrypted sum is " + str(ot))

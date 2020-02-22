@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Key,Component
+from .models import Employee, Medicine, Component
 # Register your models here.
 
-admin.site.register(Key)
+admin.site.register(Employee)
+admin.site.register(Medicine)
 admin.site.register(Component)

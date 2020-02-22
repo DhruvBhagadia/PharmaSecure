@@ -1,0 +1,36 @@
+@import url('http://fonts.googleapis.com/css?family=Bitter');
+/*Work sans*/
+
+* {
+	font-family: "Bitter";
+}
+
+.main {
+	background-color: slateblue;
+}
+
+.header {
+	font-family: "Perpetua";
+	text-align: center;
+}
+
+.logo {
+	height: 70px;
+	width: 100px;
+}
+
+.content {
+	width: 60%;
+	padding: 30px;
+	background-color: white;
+	border: 1px solid gray;
+	border-radius: 20px;
+}
+
+table th {
+	font-size: 18px;
+}
+
+table td {
+	font-size: 16px;
+}
