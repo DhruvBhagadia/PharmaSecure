@@ -1,76 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Display Page</title>
-	
-	{% load static %}
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css">
+{% extends "files/base_manager.html" %}
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="{% static 'files/display.css' %}">
+{% block content %}
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>	
+<div class="card-header text-center">
+    <h3 class="mb-0">Medicine Details</h3>
+</div>
+<br>
+<table class="display table table-hover text-center">
+  	<thead>
+        <tr>
+          	<th><b>#</b></th>
+          	<th><b>Component Name</b></th>
+          	<th><b>Quantity</b></th>
+          	<th><b>Total Cost</b></th>
+        </tr>
+  	</thead>
+  	<tbody>
+  	{% for value in values %}
+        <tr>
+          <td scope="row">{{ value[0] }}</td>
+          <td>{{ value[1] }}</td>
+          <td>{{ value[2] }}</td>
+        </tr>
+    {% end for %}
+  	</tbody>
+</table>
 
-	<!-- Jquery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>	
-
-</head>
-<body>
-	<div class="main">
-<!--         <div class="header">
-            <img src="./logo1.jpg" class="logo img-responsive">
-            <h2><b>DevMust Impex</b></h2>
-        </div> -->
-
-		<nav class="header navbar navbar-light bg-dark">
-		  	<a class="navbar-brand d-flex" href="#">
-		    	<img src="./logo1.jpg" class="logo d-inline-block align-top" alt=""> 
-		    	<h3 class="my-auto text-light"><b>DevMust Impex</b></h3>
-		  	</a>
-		</nav>
-
-		<br><br><br>
-		<div class="container content">
-            <div class="card-header text-center">
-                <h3 class="mb-0">Medicine Details</h3>
-            </div>
-            <br>
-		  	<table class="display table table-hover text-center">
-              	<thead>
-	                <tr>
-	                  <th><b>#</b></th>
-	                  <th><b>Component Name</b></th>
-	                  <th><b>Quantity</b></th>
-	                  <th><b>Total Cost</b></th>
-	                </tr>
-              	</thead>
-              	<tbody>
-	                <tr>
-	                  <td scope="row">1</td>
-	                  <td>Mark</td>
-	                  <td>20</td>
-	                  <td>40</td>
-	                </tr>
-	                <tr>
-	                  <td scope="row">2</td>
-	                  <td>Jacob</td>
-	                  <td>40</td>
-	                  <td>30</td>
-	                </tr>
-	                <tr>
-	                  <td scope="row">3</td>
-	                  <td>Larry the Bird</td>
-	                  <td>10</td>
-	                  <td>30</td>
-	                </tr>
-              	</tbody>
-            </table>
-		</div>
-		<br><br>
-	</div>
-
-</body>
-</html>
+{% endblock content %}

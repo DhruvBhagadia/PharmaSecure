@@ -8,24 +8,31 @@ def gen_key():
     for i in range(BS):
         num = num + str(random.randint(0,9))    
     key = num.encode()
-
+    # iv = Random.new().read(AES.block_size)
     # key = os.urandom(BS)
     return key
 
 def pad(s):
     return s + "0" * (AES.block_size - len(s) % AES.block_size)
 
-def encrypt(message,key):
+def encrypt(message, key):
     message = pad(message)
-    iv = Random.new().read(AES.block_size)
+    iv = b'8\xd78\xda\x00\xf6\xb3L4\xad \xb3\xa5\xe8X\x11'
     cipher = AES.new(key, AES.MODE_CBC, iv)
     return iv + cipher.encrypt(message.encode('utf8'))
 
-def decrypt(key,ciphertext):
-    iv = ciphertext[:AES.block_size]
+def decrypt(key, ciphertext):
+    iv = b'8\xd78\xda\x00\xf6\xb3L4\xad \xb3\xa5\xe8X\x11'
     cipher = AES.new(key, AES.MODE_CBC, iv)
     plaintext = cipher.decrypt(ciphertext[AES.block_size:])
     return plaintext.decode('utf8').strip("0")
+
+# msg = "devansh"
+# key = gen_key()
+# enc = encrypt(msg, key)
+# dec = decrypt(key, enc)
+# print(enc)
+# print(dec)
 
 def encrypt_file(key, in_filename, out_filename=None, chunksize=64*1024):
     if not out_filename:

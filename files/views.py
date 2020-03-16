@@ -5,7 +5,7 @@ from . import paillier, AESCipher
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import authenticate
-from .models import Employee 
+from .models import Employee, Medicine, Component
 import random
 
 
@@ -21,7 +21,7 @@ def managerLogin(request):
             user.set_password(password)
             user.save()
             priv,pub = paillier.generate_keypair(256)
-            aes = AESCipher.gen_key()
+            aes_key = AESCipher.gen_key()
             a = priv.get_list()
             priv1 = a[0]
             priv2 = a[1]
@@ -35,37 +35,99 @@ def managerLogin(request):
             f.write(str(pub) + "\n")
             f.write(str(priv1) + "\n")
             f.write(str(priv2) + "\n")
-            f.write(str(aes))
+            f.write(str(aes_key))
             f.close()
-            AESCipher.encrypt_file(file_key, 'manager.txt')
-            AESCipher.decrypt_file(file_key, 'manager.txt.enc')
-            # AESCipher.decrypt_file(file_key, '')
+            # AESCipher.encrypt_file(file_key, 'manager.txt')
+            # AESCipher.decrypt_file(file_key, 'manager.txt.enc')
 
             f = open("employee.txt","w+")
             f.write(str(pub) + "\n")
-            f.write(str(aes))
+            f.write(str(aes_key))
             f.close()
             login(request, authenticate(username=username, password=password))
 
-            return redirect('/AddEmployee/')
+            return redirect('/addEmployee/')
     else:
                 user_form = ManagerForm()
 
-    return render(request,'files/login.html', {'user_form': user_form})               
+    return render(request,'files/managerRegister.html', {'user_form': user_form})               
 
 def addEmployee(request):       
     return render(request,'files/addEmployee.html')
 
-def register(request):
-    medicine_name = "Crocin"
+def display(request):
     file = open('manager.txt')
-    all_lines = file.readlines()
-    key = all_lines[3]
-    key = key[2:-1]
-    key = key.encode('UTF-8')
-    encrypt_msg = AESCipher.encrypt(medicine_name, key)
+    all_lines = file.readlines() 
+    pub = int(all_lines[0])
+    priv1 = int(all_lines[1])
+    priv2 = int(all_lines[2])
+    aes = all_lines[3]
+    aes = aes[2:-1]
+    aes = aes.encode('utf8') 
+    values = []
+    comp = Component.objects.all()
+    for item in comp: 
+        comp_name = item.component_name
 
-    return HttpResponse("<h1>Holla modamustfakaa</h1>")
+        # comp_name = bytes(comp_name, 'UTF-8')
+        comp_name = comp_name[2:-1]
+        comp_name = comp_name.encode('utf8')
+        print(type(comp_name))
+        # comp_name = comp_name.decode('UTF-8')
+        # print(type(comp_name))
+        print(comp_name)
+        # print(type(comp_name))
+
+        name = AESCipher.decrypt(aes, comp_name)
+        quantity = paillier.decrypt(priv1, priv2, pub, int(item.component_quantity)) 
+        cost = paillier.decrypt(priv1, priv2, pub, int(item.component_cost)) 
+        value = [name, quantity, cost]
+        values.append(value)
+
+    return render(request, 'files/display.html', {'values':values})
+
+def medicineName(request):
+    return render(request, 'files/medicineName.html')    
+
+def addComponent(request):
+    if request.method == 'POST':
+        name = request.POST['inputName']
+        quantity = request.POST['inputQuantity']
+        cost = request.POST['inputCost']
+
+        file = open('employee.txt')
+        all_lines = file.readlines()
+        pub_key = int(all_lines[0])
+        aes_key = all_lines[1]
+        aes_key = aes_key[2:-1]
+        aes_key = aes_key.encode('UTF-8')        
+        new_name = AESCipher.encrypt(name, aes_key)
+        new_name = str(new_name)        
+        new_quantity = paillier.encrypt(pub_key, int(quantity))
+        new_cost= paillier.encrypt(pub_key, int(cost))    
+
+        if Component.objects.filter(component_name=new_name).exists():
+            obj = Component.objects.get(component_name=new_name)
+            obj.component_quantity = paillier.e_add(pub_key, int(obj.component_quantity), int(new_quantity))
+            obj.component_cost = paillier.e_add(pub_key, int(obj.component_cost), int(new_cost))
+            obj.save()
+        else:
+            form = Component.objects.create(component_name=new_name, component_quantity=new_quantity, component_cost=new_cost)
+            form.save() 
+        return render(request, 'files/employee.html')              
+
+    return render(request, 'files/employee.html')
+
+# def register(request):
+#     medicine_name = "Crocin"
+#     file = open('manager.txt')
+#     all_lines = file.readlines()
+#     key = all_lines[3]
+#     key = key[2:-1]
+#     key = key.encode('UTF-8')
+#     encrypt_msg = AESCipher.encrypt(medicine_name, key)
+
+#     return HttpResponse("<h1>Holla modamustfakaa</h1>")
 
 # def register_med(request):
 

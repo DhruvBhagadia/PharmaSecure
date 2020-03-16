@@ -5,9 +5,11 @@ from . import views
 app_name = 'files'
 
 urlpatterns = [
-    path('ManagerRegister/', views.managerLogin, name='manLog'),
-    path('AddEmployee/', views.addEmployee, name='addEmp'),
-    path('see/', views.register, name='see'),
+    path('managerRegister/', views.managerLogin, name='manLog'),
+    path('addEmployee/', views.addEmployee, name='addEmp'),
+    path('display/', views.display, name='display'),
+    path('medicineName/', views.medicineName, name='medName'),
+    path('employee/', views.addComponent, name='addComp'),
     # path('<int:med_id>/',views.add_component,name='constituent'),
     # path('list/',views.home,name='home'),
     # path('list/<int:id>/',views.retrieve_components,name='retrieve'),

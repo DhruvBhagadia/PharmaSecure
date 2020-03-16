@@ -27,7 +27,7 @@
 		</div> -->
 		<nav class="header navbar navbar-light bg-dark">
 		  	<a class="navbar-brand d-flex" href="#">
-		    	<img src="./logo1.jpg" class="logo d-inline-block align-top" alt=""> 
+		    	<img src="{% static 'files/images/logo1.jpg' %}" class="logo d-inline-block align-top" alt=""> 
 		    	<h3 class="my-auto text-light"><b>DevMust Impex</b></h3>
 		  	</a>
 		</nav>
@@ -39,21 +39,22 @@
                             <h3 class="mb-0">Medicine Details</h3>
                         </div>
                         <div class="card-body">
-                            <form class="form" role="form" autocomplete="off">
+                            <form class="form" method="POST" role="form" autocomplete="off">
+                            	{% csrf_token %}
                             	<br>
                                 <div class="form-group">
                                     <label for="inputName">Medicine Name</label>
-                                    <input type="text" class="form-control" id="inputName" placeholder="Name" required="">
+                                    <input type="text" class="form-control" id="inputName" name="inputName" placeholder="Name" required="">
                                 </div>
                                 <br>
                                 <div class="form-group">
-                                    <label for="inputEmail3">Medicine Quantity</label>
-                                    <input type="number" class="form-control" id="inputQuantity" placeholder="Quantity" required="">
+                                    <label for="inputQuantity">Medicine Quantity</label>
+                                    <input type="number" class="form-control" id="inputQuantity" name="inputQuantity" placeholder="Quantity" required="">
                                 </div>
                                 <br>
                                 <div class="form-group">
-                                    <label for="inputPassword3">Medicine Cost</label>
-                                    <input type="number" class="form-control" id="inputCost" placeholder="Cost" required="">
+                                    <label for="inputCost">Medicine Cost</label>
+                                    <input type="number" class="form-control" id="inputCost" name="inputCost" placeholder="Cost" required="">
                                 </div>
                                 <br>
                                 <div class="form-group text-center">

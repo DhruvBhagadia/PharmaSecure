@@ -1,0 +1,24 @@
+{% extends "files/base_login.html" %}
+
+{% block content %}
+
+<form method="post">
+	<h3 class="text-dark text-center"><b>Login Form</b></h3>
+	<br>
+    {% csrf_token %}
+    	{% for field in user_form %}
+			<div class="form-group">
+					<div>
+						<span class="text-danger la">{{ field.errors }}</span>
+					</div>
+					<label>{{ field.label_tag }}</label>
+					<div>{{ field }}</div>
+			</div>
+
+		{% endfor %}
+		<br>
+        <button type="submit" class="btn login_btn">Register</button>
+        <br>
+</form>					
+
+{% endblock content %}
