@@ -16,11 +16,14 @@
         </tr>
   	</thead>
   	<tbody>
+      {% for value in values %}
         <tr>
-          <td scope="row">{{ name }}</td>
-          <td>{{ name }}</td>
-          <td>{{ name }}</td>
+          <td scope="row">{{ value.ctr }}</td>
+          <td>{{ value.name }}</td>
+          <td>{{ value.quantity }}</td>
+          <td>{{ value.cost }}</td>
         </tr>
+      {% endfor %}
   	</tbody>
 </table>
 
