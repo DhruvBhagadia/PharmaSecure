@@ -30,19 +30,24 @@ def managerLogin(request):
             while len(file_key) != 32:
                 file_key = file_key + str(random.randint(0,9))
             file_key = file_key.encode('UTF-8')
-            
+            print()
+            print("pub " + str(type(pub)) + " " + str(pub))
+            print("priv1 " + str(type(priv1)))
+            print("priv2 " + str(type(priv2)))
+            print("aes_key " + str(type(aes_key)) + " " + str(aes_key))
+            print()
             f = open("manager.txt","w+")
             f.write(str(pub) + "\n")
             f.write(str(priv1) + "\n")
             f.write(str(priv2) + "\n")
-            f.write(str(aes_key))
+            f.write(aes_key.hex())
             f.close()
             # AESCipher.encrypt_file(file_key, 'manager.txt')
             # AESCipher.decrypt_file(file_key, 'manager.txt.enc')
 
             f = open("employee.txt","w+")
             f.write(str(pub) + "\n")
-            f.write(str(aes_key))
+            f.write(aes_key.hex())
             f.close()
             login(request, authenticate(username=username, password=password))
 
@@ -59,19 +64,24 @@ def display(request):
     file = open('manager.txt')
     all_lines = file.readlines() 
     pub = int(all_lines[0])
+    print("display: " + str(pub))
     priv1 = int(all_lines[1])
     priv2 = int(all_lines[2])
     aes = all_lines[3]
-    aes = aes[2:-1]
-    aes = aes.encode('utf8') 
+    # aes = aes[2:-1]
+    aes = bytes.fromhex(aes) 
+    print(aes)
     values = []
     comp = Component.objects.all()
     for item in comp: 
         comp_name = item.component_name
-
+        print("here")
+        print(comp_name)
         # comp_name = bytes(comp_name, 'UTF-8')
-        comp_name = comp_name[2:-1]
-        comp_name = comp_name.encode('utf8')
+        # comp_name = comp_name[2:-1]
+        print(type(comp_name))
+        comp_name = bytes.fromhex(comp_name)
+        # comp_name = comp_name.encode('utf8')
         print(type(comp_name))
         # comp_name = comp_name.decode('UTF-8')
         # print(type(comp_name))
@@ -81,10 +91,11 @@ def display(request):
         name = AESCipher.decrypt(aes, comp_name)
         quantity = paillier.decrypt(priv1, priv2, pub, int(item.component_quantity)) 
         cost = paillier.decrypt(priv1, priv2, pub, int(item.component_cost)) 
-        value = [name, quantity, cost]
-        values.append(value)
+        print(name + " " + str(quantity) + " " + str(cost))
+        # value = [name, quantity, cost]
+        values.append(name)
 
-    return render(request, 'files/display.html', {'values':values})
+    return render(request, 'files/display.html', {'name':values})
 
 def medicineName(request):
     return render(request, 'files/medicineName.html')    
@@ -99,13 +110,17 @@ def addComponent(request):
         all_lines = file.readlines()
         pub_key = int(all_lines[0])
         aes_key = all_lines[1]
-        aes_key = aes_key[2:-1]
-        aes_key = aes_key.encode('UTF-8')        
+        # print(str(pub_key) + " " + aes_key)      
+        # aes_key = aes_key[2:-1]
+        aes_key = bytes.fromhex(aes_key) 
+        # print(aes_key) 
         new_name = AESCipher.encrypt(name, aes_key)
-        new_name = str(new_name)        
+        print("encrypted text in bytes: " + str(new_name))
+        new_name = new_name.hex()
+        print("encrypted name: " + new_name)        
         new_quantity = paillier.encrypt(pub_key, int(quantity))
         new_cost= paillier.encrypt(pub_key, int(cost))    
-
+        # print(new_name + " " + str(new_quantity) + " " + str(new_cost))
         if Component.objects.filter(component_name=new_name).exists():
             obj = Component.objects.get(component_name=new_name)
             obj.component_quantity = paillier.e_add(pub_key, int(obj.component_quantity), int(new_quantity))

@@ -1,38 +1,31 @@
 import os, random, struct
 from Crypto.Cipher import AES
 from Crypto import Random
-
+iv = b'\x8b\xb2\xdf\xc8\xe2\x19Z7H>\n\x80wA\x844'
 def gen_key():
-    BS = 32
-    num = ''
-    for i in range(BS):
-        num = num + str(random.randint(0,9))    
-    key = num.encode()
-    # iv = Random.new().read(AES.block_size)
-    # key = os.urandom(BS)
+    BS = 16
+    key = os.urandom(BS)
+    print("key")
+    print(key)
     return key
 
 def pad(s):
     return s + "0" * (AES.block_size - len(s) % AES.block_size)
 
-def encrypt(message, key):
+def encrypt(message,key):
     message = pad(message)
-    iv = b'8\xd78\xda\x00\xf6\xb3L4\xad \xb3\xa5\xe8X\x11'
+    # print(message)
     cipher = AES.new(key, AES.MODE_CBC, iv)
-    return iv + cipher.encrypt(message.encode('utf8'))
+    # print(bytes.fromhex(message.encode('utf-8')))
+    return iv + cipher.encrypt(message.encode('utf-8'))
 
-def decrypt(key, ciphertext):
-    iv = b'8\xd78\xda\x00\xf6\xb3L4\xad \xb3\xa5\xe8X\x11'
+def decrypt(key,ciphertext):
+    # iv = ciphertext[:AES.block_size]
     cipher = AES.new(key, AES.MODE_CBC, iv)
     plaintext = cipher.decrypt(ciphertext[AES.block_size:])
-    return plaintext.decode('utf8').strip("0")
+    print(plaintext)
+    return plaintext.decode("utf-8").strip("0")
 
-# msg = "devansh"
-# key = gen_key()
-# enc = encrypt(msg, key)
-# dec = decrypt(key, enc)
-# print(enc)
-# print(dec)
 
 def encrypt_file(key, in_filename, out_filename=None, chunksize=64*1024):
     if not out_filename:
@@ -74,3 +67,8 @@ def decrypt_file(key, in_filename, out_filename=None, chunksize=24*1024):
                 outfile.write(decryptor.decrypt(chunk))
 
             outfile.truncate(origsize)
+
+
+key = gen_key()
+encrypted = encrypt("TestMessage", key)
+print(decrypt(key, encrypted))
