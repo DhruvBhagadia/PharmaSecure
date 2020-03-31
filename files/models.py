@@ -2,12 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Employee(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    email = models.CharField(max_length=100, default=None)
-    name = models.EmailField(max_length=100, default=None)
+
+    email = models.EmailField(max_length=100, default=None)
+    name = models.CharField(max_length=100, default=None)
+    manager_name = models.CharField(max_length=100,default=None)
+
 
     def __str__(self):
-        return self.user
+        return self.name
 
 class Medicine(models.Model):
     manager = models.ForeignKey(User, on_delete=models.CASCADE, default=None)

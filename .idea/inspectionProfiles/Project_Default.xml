@@ -1,0 +1,30 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="10">
+            <item index="0" class="java.lang.String" itemvalue="django-popup-field" />
+            <item index="1" class="java.lang.String" itemvalue="django-bootstrap3" />
+            <item index="2" class="java.lang.String" itemvalue="django-autocomplete-light" />
+            <item index="3" class="java.lang.String" itemvalue="Babel" />
+            <item index="4" class="java.lang.String" itemvalue="django-crispy-forms" />
+            <item index="5" class="java.lang.String" itemvalue="phonenumbers" />
+            <item index="6" class="java.lang.String" itemvalue="django-tempus-dominus" />
+            <item index="7" class="java.lang.String" itemvalue="django-phonenumber-field" />
+            <item index="8" class="java.lang.String" itemvalue="django-ajax-selects" />
+            <item index="9" class="java.lang.String" itemvalue="Pillow" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="website.popups.popup_field" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

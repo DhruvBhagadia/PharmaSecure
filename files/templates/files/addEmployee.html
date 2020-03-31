@@ -7,18 +7,21 @@
         <h3 class="mb-0">Add Employee</h3>
     </div>
     <div class="card-body">
-        <form class="form" role="form" autocomplete="off">
+        <form method='post'>
+
             <br>
+             {% csrf_token %}
             <div class="form-group">
                 <label for="inputName">Enter Employee Name</label>
-                <input type="text" class="form-control" id="inputName" placeholder="Name" required="">
+                <input name="inputName" type="text" class="form-control" id="inputName" placeholder="Name" required="">
             </div>
             
             <br>
             <div class="form-group">
                 <label for="inputEmail3">Enter Employee E-mail Address</label>
-                <input type="email" class="form-control" id="inputQuantity" placeholder="E-Mail" required="">
+                <input name="inputEmail3" type="email" class="form-control" id="inputEmail3" placeholder="E-Mail" required="">
             </div>
+
             
             <br>
             <div class="form-group text-center">

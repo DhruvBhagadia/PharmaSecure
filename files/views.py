@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import authenticate
 from .models import Employee, Medicine, Component
+from django.conf import settings
+from django.core.mail import send_mail
 import random
 
 
@@ -55,8 +57,25 @@ def managerLogin(request):
 
     return render(request,'files/managerRegister.html', {'user_form': user_form})               
 
-def addEmployee(request):       
-    return render(request,'files/addEmployee.html')
+def addEmployee(request):
+    user = User.objects.get(username = request.user.username)
+
+    if request.method == 'POST':
+        emp_name = request.POST['inputName']
+        emp_email = request.POST['inputEmail3']
+        print(emp_name)
+        emp_obj = Employee.objects.create(email=emp_email,name=emp_name,manager_name = user.username)
+        emp_obj.save()
+        subject = "Important Notfication"
+        message = 'Following is your username and password to login in DevMust Impex' \
+                  'Username:'+emp_email+' Password: YOUR_MAMA_IS_A_HOE'
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [emp_email,from_email]
+        send_mail(subject=subject,from_email=from_email,message=message,recipient_list=to_list,fail_silently=True)
+        return render(request, 'files/addEmployee.html')
+    else:
+        return render(request,'files/addEmployee.html')
+
 
 def display(request):
     file = open('manager.txt')
