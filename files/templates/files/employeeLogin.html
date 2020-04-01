@@ -1,0 +1,29 @@
+{% extends "files/base_login.html" %}
+
+{% block content %}
+
+<form method="post">
+	{% csrf_token %}
+	<h3 class="text-light text-center"><b>Employee Login</b></h3>
+	<br>
+	<div class="input-group mb-3">
+		<div class="input-group-append">
+			<span class="input-group-text"><i class="fa fa-user"></i></span>
+		</div>
+		<input type="text" name="email" id="email" class="input form-control mx-2" value="" placeholder="User ID">
+	</div>
+	<div class="input-group mb-2">
+		<div class="input-group-append">
+			<span class="input-group-text"><i class="fa fa-key"></i></span>
+		</div>
+		<input type="password" name="password" id="password" class="input form-control mx-2" value="" placeholder="Password">
+	</div>
+	<br>
+	<div class="d-flex justify-content-center mt-3 login_container">
+		<button type="submit" name="button" class="btn login_btn">Login</button>
+	</div>
+	<br>
+</form>		
+
+{% endblock content %}	
+			

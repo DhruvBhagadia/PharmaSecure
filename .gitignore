@@ -1,5 +1,6 @@
-__pycache__
-db.sqlite3
+__pycache__/
+.idea/
+*.sqlite3
 employee.txt
 manager.txt
 manager.txt.enc

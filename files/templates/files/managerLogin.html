@@ -3,9 +3,10 @@
 {% block content %}
 
 <form method="post">
-	<h3 class="text-dark text-center"><b>Manager Registration</b></h3>
+	{% csrf_token %}
+	<h3 class="text-dark text-center"><b>Manager Login</b></h3>
 	<br>
-    {% csrf_token %}
+    
 	{% for field in user_form %}
 		<div class="form-group">
 				<div>
@@ -17,9 +18,9 @@
 
 	{% endfor %}
 	<br>
-    <button type="submit" class="btn login_btn">Register</button>
-    <a href="{% url 'files:manLog' %}">Already a manager? Login</a>
+    <button type="submit" class="btn login_btn">Login</button>
+    <a href="{% url 'files:manReg' %}">Register as Manager</a>
     <br>
-</form>					
+</form>		
 
 {% endblock content %}

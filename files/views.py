@@ -11,8 +11,40 @@ from django.core.mail import send_mail
 import random
 
 
+def employeeLogin(request):
+    if request.method == 'POST':
+        email = request.POST['email'] 
+        password = request.POST['password']       
+        if Employee.objects.filter(email=email).exists() and password=="password":
+            element = Employee.objects.get(email=email)
+            return redirect('/employee/' + str(element.id))
+            # return redirect('addComponent', employee_id=element.id)
+
+    return render(request, 'files/employeeLogin.html')
+
+def newPassword(request):
+    return render(request, 'files/newPassword.html')
+
 def managerLogin(request):
-    if request.method=='POST':
+    if request.method == 'POST':
+        user_form = ManagerForm(request.POST)
+
+        if user_form.is_valid():
+            username = user_form.cleaned_data['username']
+            password = user_form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/addEmployee/')
+
+    else:
+        user_form = ManagerForm()                
+
+    return render(request, 'files/managerLogin.html', {'user_form': user_form})                    
+
+def managerRegister(request):
+    if request.method == 'POST':
 
         user_form = ManagerForm(request.POST)
 
@@ -67,8 +99,8 @@ def addEmployee(request):
         emp_obj = Employee.objects.create(email=emp_email,name=emp_name,manager_name = user.username)
         emp_obj.save()
         subject = "Important Notfication"
-        message = 'Following is your username and password to login in DevMust Impex' \
-                  'Username:'+emp_email+' Password: YOUR_MAMA_IS_A_HOE'
+        message = 'Following is your username and password to login in DevMust Impex ' \
+                  'Username: ' + emp_email + ' Password: password'
         from_email = settings.EMAIL_HOST_USER
         to_list = [emp_email,from_email]
         send_mail(subject=subject,from_email=from_email,message=message,recipient_list=to_list,fail_silently=True)
@@ -108,7 +140,9 @@ def display(request):
 def medicineName(request):
     return render(request, 'files/medicineName.html')    
 
-def addComponent(request):
+def addComponent(request, employee_id):
+
+    element = Employee.objects.get(id=employee_id)
     if request.method == 'POST':
         name = request.POST['inputName']
         quantity = request.POST['inputQuantity']
@@ -131,9 +165,9 @@ def addComponent(request):
         else:
             form = Component.objects.create(component_name=new_name, component_quantity=new_quantity, component_cost=new_cost)
             form.save() 
-        return render(request, 'files/employee.html')              
+        # return render(request, 'files/employee.html')              
 
-    return render(request, 'files/employee.html')
+    return render(request, 'files/employee.html', {'employee':element})
 
 # def register(request):
 #     medicine_name = "Crocin"

@@ -30,6 +30,14 @@
 		    	<img src="{% static 'files/images/logo1.jpg' %}" class="logo d-inline-block align-top" alt=""> 
 		    	<h3 class="my-auto text-light"><b>DevMust Impex</b></h3>
 		  	</a>
+		  	<ul class="navbar-nav ml-auto text-light">
+			    <li class="nav-item">
+			      	<h5>User: {{ employee.name }}</h5>
+			    </li>	
+			    <li class="nav-item">
+			      	<h5>Manager: {{ employee.manager_name }}</h5>
+			    </li>
+			</ul>	  	
 		</nav>
 
 		<br><br><br>

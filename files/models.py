@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Employee(models.Model):
 
-    email = models.EmailField(max_length=100, default=None)
+    email = models.EmailField(max_length=100, unique=True, default=None)
     name = models.CharField(max_length=100, default=None)
     manager_name = models.CharField(max_length=100,default=None)
 
