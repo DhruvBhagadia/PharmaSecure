@@ -3,6 +3,7 @@
 {% block content %}
 
 <form method="post">
+
 	<h3 class="text-dark text-center"><b>Manager Registration</b></h3>
 	<br>
     {% csrf_token %}
@@ -16,7 +17,14 @@
 		</div>
 
 	{% endfor %}
+	<div class="input-group mb-3">
+		<div class="input-group-append">
+			<span class="input-group-text"><i class="fa fa-medkit"></i></span>
+		</div>
+		<input type="text" name="medicine" id="medicine" class="input form-control mx-2" value="" placeholder="Medicine">
+	</div>
 	<br>
+
     <button type="submit" class="btn login_btn">Register</button>
     <a href="{% url 'files:manLog' %}">Already a manager? Login</a>
     <br>

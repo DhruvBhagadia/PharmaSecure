@@ -37,7 +37,11 @@
 			    <li class="nav-item">
 			      	<h5>Manager: {{ employee.manager_name }}</h5>
 			    </li>
-			</ul>	  	
+                <li class="nav-item">
+			      	<h5><a href="{% url 'files:empLog' %}">Logout</a></h5>
+			    </li>
+			</ul>
+
 		</nav>
 
 		<br><br><br>

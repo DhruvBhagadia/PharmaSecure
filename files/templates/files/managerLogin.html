@@ -4,23 +4,27 @@
 
 <form method="post">
 	{% csrf_token %}
-	<h3 class="text-dark text-center"><b>Manager Login</b></h3>
+	<h3 class="text-light text-center"><b>Manager Login</b></h3>
 	<br>
-    
-	{% for field in user_form %}
-		<div class="form-group">
-				<div>
-					<span class="text-danger la">{{ field.errors }}</span>
-				</div>
-				<label>{{ field.label_tag }}</label>
-				<div>{{ field }}</div>
+	<div class="input-group mb-3">
+		<div class="input-group-append">
+			<span class="input-group-text"><i class="fa fa-user"></i></span>
 		</div>
-
-	{% endfor %}
+		<input type="text" name="email" id="email" class="input form-control mx-2" value="" placeholder="User ID">
+	</div>
+	<div class="input-group mb-2">
+		<div class="input-group-append">
+			<span class="input-group-text"><i class="fa fa-key"></i></span>
+		</div>
+		<input type="password" name="password" id="password" class="input form-control mx-2" value="" placeholder="Password">
+	</div>
 	<br>
-    <button type="submit" class="btn login_btn">Login</button>
+	<div class="d-flex justify-content-center mt-3 login_container">
+		<button type="submit" name="button" class="btn login_btn">Login</button>
+	</div>
+	<br>
     <a href="{% url 'files:manReg' %}">Register as Manager</a>
     <br>
-</form>		
+</form>
 
 {% endblock content %}

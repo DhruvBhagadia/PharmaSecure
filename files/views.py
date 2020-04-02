@@ -9,6 +9,7 @@ from .models import Employee, Medicine, Component
 from django.conf import settings
 from django.core.mail import send_mail
 import random
+from django.contrib.auth.decorators import login_required
 
 
 def employeeLogin(request):
@@ -26,28 +27,25 @@ def newPassword(request):
     return render(request, 'files/newPassword.html')
 
 def managerLogin(request):
-    if request.method == 'POST':
-        user_form = ManagerForm(request.POST)
+    logout(request)
+    if request.POST:
+        username = request.POST.get('email')
+        password = request.POST.get('password')
+        print(username,password)
+        user = authenticate(username = username, password = password)
 
-        if user_form.is_valid():
-            username = user_form.cleaned_data['username']
-            password = user_form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect('/addEmployee/')
+        if user is not None:
+            if user.is_active:
+                login(request,user)
+                return redirect('/addEmployee/')
 
-    else:
-        user_form = ManagerForm()                
-
-    return render(request, 'files/managerLogin.html', {'user_form': user_form})                    
+    return render(request, 'files/managerLogin.html')
 
 def managerRegister(request):
     if request.method == 'POST':
 
         user_form = ManagerForm(request.POST)
-
+        medicine = request.POST.get('medicine')
         if user_form.is_valid():
             user = user_form.save(commit=False)
             username = user_form.cleaned_data['username']
@@ -60,7 +58,9 @@ def managerRegister(request):
             priv1 = a[0]
             priv2 = a[1]
             file_key = password
-
+            medicine = AESCipher.encrypt(medicine,aes_key)
+            med = Medicine.objects.create(manager = user, medicine_name = medicine)
+            med.save()
             while len(file_key) != 32:
                 file_key = file_key + str(random.randint(0,9))
             file_key = file_key.encode('UTF-8')
@@ -76,11 +76,12 @@ def managerRegister(request):
             f.write(str(priv2) + "\n")
             f.write(aes_key.hex())
             f.close()
-
+            #AESCipher.encrypt_file(password,'manager.txt')
             f = open("employee.txt","w+")
             f.write(str(pub) + "\n")
             f.write(aes_key.hex())
             f.close()
+            #AESCipher.encrypt_file('password','employee.txt')
             login(request, authenticate(username=username, password=password))
 
             return redirect('/addEmployee/')
@@ -89,14 +90,17 @@ def managerRegister(request):
 
     return render(request,'files/managerRegister.html', {'user_form': user_form})               
 
+
+
+login_required(login_url='files:manLog')
 def addEmployee(request):
     user = User.objects.get(username = request.user.username)
-
+    med = Medicine.objects.get(manager = user)
     if request.method == 'POST':
         emp_name = request.POST['inputName']
         emp_email = request.POST['inputEmail3']
         print(emp_name)
-        emp_obj = Employee.objects.create(email=emp_email,name=emp_name,manager_name = user.username)
+        emp_obj = Employee.objects.create(email=emp_email,name=emp_name,manager_name = user.username,medicine_name = med.medicine_name )
         emp_obj.save()
         subject = "Important Notfication"
         message = 'Following is your username and password to login in DevMust Impex ' \
@@ -108,7 +112,7 @@ def addEmployee(request):
     else:
         return render(request,'files/addEmployee.html')
 
-
+login_required(login_url='files:manLog')
 def display(request):
     file = open('manager.txt')
     all_lines = file.readlines() 
@@ -118,7 +122,11 @@ def display(request):
     aes = all_lines[3]
     aes = bytes.fromhex(aes) 
     values = []
-    comp = Component.objects.all()
+    #comp = Component.objects.all()
+    user = User.objects.get(username = request.user)
+    med = Medicine.objects.get(manager = user)
+    comp = Component.objects.filter(key = med)
+
     ctr = 1
     for item in comp: 
         comp_name = item.component_name
@@ -140,9 +148,11 @@ def display(request):
 def medicineName(request):
     return render(request, 'files/medicineName.html')    
 
+login_required(login_url='files:empLog')
 def addComponent(request, employee_id):
 
     element = Employee.objects.get(id=employee_id)
+    medicine = Medicine.objects.get(medicine_name = element.medicine_name)
     if request.method == 'POST':
         name = request.POST['inputName']
         quantity = request.POST['inputQuantity']
@@ -163,7 +173,7 @@ def addComponent(request, employee_id):
             obj.component_cost = paillier.e_add(pub_key, int(obj.component_cost), int(new_cost))
             obj.save()
         else:
-            form = Component.objects.create(component_name=new_name, component_quantity=new_quantity, component_cost=new_cost)
+            form = Component.objects.create(key = medicine ,component_name=new_name, component_quantity=new_quantity, component_cost=new_cost)
             form.save() 
         # return render(request, 'files/employee.html')              
 
