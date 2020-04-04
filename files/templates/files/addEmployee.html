@@ -8,9 +8,8 @@
     </div>
     <div class="card-body">
         <form method='post'>
-
+            {% csrf_token %}
             <br>
-             {% csrf_token %}
             <div class="form-group">
                 <label for="inputName">Enter Employee Name</label>
                 <input name="inputName" type="text" class="form-control" id="inputName" placeholder="Name" required="">

@@ -1,0 +1,34 @@
+{% extends "files/base_manager.html" %}
+
+{% block content %}
+
+<div class="card-header text-center">
+    <h3 class="mb-0">{{medicine_name}}</h3>
+</div>
+<br>
+<table class="display table table-hover text-center">
+  	<thead>
+        <tr>
+            <th><b>#</b></th>
+            <th><b>Timestamp</b></th>
+            <th><b>Employee Name</b></th>
+          	<th><b>Component Name</b></th>
+          	<th><b>Component Quantity</b></th>
+          	<th><b>Component Cost</b></th>
+        </tr>
+  	</thead>
+  	<tbody>
+      {% for value in values %}
+        <tr>
+          <td scope="row">{{ value.ctr }}</td>
+          <td>{{ value.created }}</td>
+          <td>{{ value.ename }}</td>
+          <td>{{ value.cname }}</td>
+          <td>{{ value.quantity }}</td>
+          <td>{{ value.cost }}</td>
+        </tr>
+      {% endfor %}
+  	</tbody>
+</table>
+
+{% endblock content %}

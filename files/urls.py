@@ -10,6 +10,7 @@ urlpatterns = [
     path('employeeLogin/', views.employeeLogin, name='empLog'),
     path('newPassword/', views.newPassword, name='newPass'),
     path('addEmployee/', views.addEmployee, name='addEmp'),
+    path('logs/', views.logs, name='logs'),
     path('display/', views.display, name='display'),
     path('medicineName/', views.medicineName, name='logout'),
     path('employee/<int:employee_id>/', views.addComponent, name='addComponent'),

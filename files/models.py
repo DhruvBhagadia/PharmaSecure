@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Employee(models.Model):
-
     email = models.EmailField(max_length=100, unique=True, default=None)
     name = models.CharField(max_length=100, default=None)
     manager_name = models.CharField(max_length=100,default=None)
@@ -25,6 +24,13 @@ class Component(models.Model):
     component_cost = models.CharField(max_length=500, default=None)  
     # def __str__(self):
     #     return self.component_name
+
+class Logs(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=100, default=None)
+    component_name = models.CharField(max_length=500,default=None)
+    component_quantity= models.CharField(max_length=500, default=None)
+    component_cost = models.CharField(max_length=500, default=None)    
 
 # class Key(models.Model):
 #     medicine_name = models.CharField(max_length=100,default=None)

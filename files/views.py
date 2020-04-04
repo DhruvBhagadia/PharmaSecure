@@ -5,10 +5,10 @@ from . import paillier, AESCipher
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import authenticate
-from .models import Employee, Medicine, Component
+from .models import Employee, Medicine, Component, Logs
 from django.conf import settings
 from django.core.mail import send_mail
-import random
+import random, datetime
 from django.contrib.auth.decorators import login_required
 
 
@@ -112,6 +112,38 @@ def addEmployee(request):
     else:
         return render(request,'files/addEmployee.html')
 
+
+login_required(login_url='files:manLog')
+def logs(request):
+    log = Logs.objects.all()
+    file = open('manager.txt')
+    all_lines = file.readlines() 
+    pub = int(all_lines[0])
+    priv1 = int(all_lines[1])
+    priv2 = int(all_lines[2])
+    aes = all_lines[3]
+    aes = bytes.fromhex(aes) 
+    values = []
+
+    ctr = 1
+    for item in log: 
+        comp_name = item.component_name
+        comp_name = bytes.fromhex(comp_name)
+        name = AESCipher.decrypt(aes, comp_name)
+        quantity = paillier.decrypt(priv1, priv2, pub, int(item.component_quantity)) 
+        cost = paillier.decrypt(priv1, priv2, pub, int(item.component_cost)) 
+        value = {}
+        value['ctr'] = ctr
+        value['created'] = item.created
+        value['ename'] = item.name
+        value['cname'] = name
+        value['quantity'] = quantity
+        value['cost'] = cost
+        values.append(value)
+        ctr = ctr+1
+
+    return render(request, 'files/logs.html', {'values': values})
+
 login_required(login_url='files:manLog')
 def display(request):
     file = open('manager.txt')
@@ -121,7 +153,6 @@ def display(request):
     priv2 = int(all_lines[2])
     aes = all_lines[3]
     aes = bytes.fromhex(aes) 
-    values = []
     #comp = Component.objects.all()
     user = User.objects.get(username = request.user)
     med = Medicine.objects.get(manager = user)
@@ -154,6 +185,8 @@ def addComponent(request, employee_id):
     element = Employee.objects.get(id=employee_id)
     medicine = Medicine.objects.get(medicine_name = element.medicine_name)
     if request.method == 'POST':
+        employee_name = element.name
+        date_field = datetime.datetime.now()
         name = request.POST['inputName']
         quantity = request.POST['inputQuantity']
         cost = request.POST['inputCost']
@@ -166,12 +199,16 @@ def addComponent(request, employee_id):
         new_name = AESCipher.encrypt(name, aes_key)
         new_name = new_name.hex()
         new_quantity = paillier.encrypt(pub_key, int(quantity))
-        new_cost= paillier.encrypt(pub_key, int(cost))    
+        new_cost= paillier.encrypt(pub_key, int(cost)) 
+
+        log = Logs.objects.create(created=date_field, name = employee_name, component_name=new_name, component_quantity=new_quantity, component_cost=new_cost)
+        log.save() 
+
         if Component.objects.filter(component_name=new_name).exists():
             obj = Component.objects.get(component_name=new_name)
             obj.component_quantity = paillier.e_add(pub_key, int(obj.component_quantity), int(new_quantity))
             obj.component_cost = paillier.e_add(pub_key, int(obj.component_cost), int(new_cost))
-            obj.save()
+            obj.save()            
         else:
             form = Component.objects.create(key = medicine ,component_name=new_name, component_quantity=new_quantity, component_cost=new_cost)
             form.save() 
