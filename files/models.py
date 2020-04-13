@@ -25,7 +25,7 @@ class Component(models.Model):
     # def __str__(self):
     #     return self.component_name
 
-class Logs(models.Model):
+class Log(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, default=None)
     component_name = models.CharField(max_length=500,default=None)

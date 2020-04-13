@@ -1,5 +1,4 @@
 __pycache__/
-.idea/
 *.sqlite3
 employee.txt
 manager.txt
