@@ -45,3 +45,27 @@ Here is how the file storing key looks:
 ## Flowcharts
 ![image](https://user-images.githubusercontent.com/32220881/84137806-d41ac180-aa6a-11ea-9314-3181ff164a06.png) ![image](https://user-images.githubusercontent.com/32220881/84137862-edbc0900-aa6a-11ea-8db0-737a11dc8206.png)
 
+## Screenshot 
+#### Database entry of Medicine components
+
+![image](https://user-images.githubusercontent.com/32220881/84143326-02e96580-aa74-11ea-89ac-6b58cbf207de.png)
+
+## Demo
+Here is the demo of our app in form of gifs.
+
+
+![1](https://user-images.githubusercontent.com/32220881/84142462-725e5580-aa72-11ea-9406-181c49e3c549.gif)
+------------------------------------------------------------------------------------------
+![2](https://user-images.githubusercontent.com/32220881/84142604-b3566a00-aa72-11ea-839a-6ccf0f041d43.gif)
+--------------------
+![3](https://user-images.githubusercontent.com/32220881/84142673-d3862900-aa72-11ea-838f-9274154067bc.gif)
+-------------
+![4](https://user-images.githubusercontent.com/32220881/84142713-e7ca2600-aa72-11ea-970e-1a2c23be6b79.gif)
+-------------
+
+### Made by team DJ Hackers
+* [Dhruv Bhagadia](https://github.com/DhruvBhagadia)
+* [Devansh Dalal](https://github.com/da2ash)
+* [Mustafa Bhanpurawala](https://github.com/mustafabhanpura)
+
+#### Feedbacks are welcome
